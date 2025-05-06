@@ -1,5 +1,0 @@
-# for any url, use these headers
-/*
-  Access-Control-Allow-Origin: *
-  Access-Control-Allow-Methods: GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS
-  Access-Control-Max-Age: 86400

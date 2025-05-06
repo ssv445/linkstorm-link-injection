@@ -58,6 +58,39 @@ function getWebsitePageOpportunities(pageUrl, opportunities) {
 	).map(processOpportunity);
 }
 
+const corsHeaders = {
+	'Access-Control-Allow-Origin': '*',
+	'Access-Control-Allow-Methods': 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+	'Access-Control-Max-Age': '86400',
+};
+
+function handleOptions(request) {
+	// Make sure the necessary headers are present
+	// for any OPTIONS request.
+	let headers = request.headers;
+	if (
+		headers.get('Origin') !== null &&
+		headers.get('Access-Control-Request-Method') !== null &&
+		headers.get('Access-Control-Request-Headers') !== null
+	) {
+		// Handle CORS preflight requests.
+		return new Response(null, {
+			headers: {
+				...corsHeaders,
+				'Access-Control-Allow-Headers': headers.get('Access-Control-Request-Headers'),
+			},
+		});
+	} else {
+		// Handle standard OPTIONS request.
+		return new Response(null, {
+			headers: {
+				...corsHeaders,
+				Allow: 'GET, HEAD, POST, OPTIONS',
+			},
+		});
+	}
+}
+
 export default {
 	async fetch(request) {
 		const opportunities = defaultOpportunities;
@@ -67,15 +100,20 @@ export default {
 			console.log(opportunities);
 			return new Response(JSON.stringify({ error: 'Invalid opportunities' }), {
 				status: 500,
-				headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+				headers: { ...corsHeaders, 'content-type': 'application/json' },
 			});
 		}
 
 		const url = new URL(request.url);
+
+		if (request.method === 'OPTIONS') {
+			return handleOptions(request);
+		}
+
 		if (url.pathname === '/') {
 			return new Response(JSON.stringify({ hello: 'world' }), {
 				status: 200,
-				headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+				headers: { ...corsHeaders, 'content-type': 'application/json' },
 			});
 		}
 		if (url.pathname === '/get_website_page_opportunities') {
@@ -83,23 +121,23 @@ export default {
 			if (!pageUrl || typeof pageUrl !== 'string') {
 				return new Response(JSON.stringify({ error: 'Invalid pageUrl' }), {
 					status: 400,
-					headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+					headers: { ...corsHeaders, 'content-type': 'application/json' },
 				});
 			}
 			try {
 				const result = getWebsitePageOpportunities(pageUrl, opportunities);
 				return new Response(JSON.stringify(result), {
 					status: 200,
-					headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+					headers: { ...corsHeaders, 'content-type': 'application/json' },
 				});
 			} catch (e) {
 				console.error(e);
 				return new Response(JSON.stringify({ error: 'Internal server error' }), {
 					status: 500,
-					headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+					headers: { ...corsHeaders, 'content-type': 'application/json' },
 				});
 			}
 		}
-		return new Response('Not Found', { status: 404 });
+		return new Response('Not Found', { status: 404, headers: corsHeaders });
 	},
 };
