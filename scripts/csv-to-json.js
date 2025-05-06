@@ -1,9 +1,9 @@
 // scripts/csv-to-json.js
-const fs = require('fs');
-const parse = require('csv-parse/sync').parse;
+import fs from 'fs';
+import { parse } from 'csv-parse/sync';
 
-const source = '../data/opportunities.csv';
-const destination = '../src/opportunities.json';
+const source = 'data/opportunities.csv';
+const destination = 'src/opportunities.json';
 
 const csv = fs.readFileSync(source, 'utf8');
 const records = parse(csv, { columns: true, skip_empty_lines: true });
