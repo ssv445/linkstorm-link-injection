@@ -59,7 +59,18 @@ function getWebsitePageOpportunities(pageUrl, opportunities) {
 }
 
 export default {
-	async fetch(request, opportunities = defaultOpportunities) {
+	async fetch(request) {
+		const opportunities = defaultOpportunities;
+
+		// verify opportunities is an array
+		if (!Array.isArray(opportunities)) {
+			console.log(opportunities);
+			return new Response(JSON.stringify({ error: 'Invalid opportunities' }), {
+				status: 500,
+				headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+			});
+		}
+
 		const url = new URL(request.url);
 		if (url.pathname === '/') {
 			return new Response(JSON.stringify({ hello: 'world' }), {
