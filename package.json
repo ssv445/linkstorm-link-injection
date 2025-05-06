@@ -1,27 +1,26 @@
 {
     "name": "linkstorm-link-injection",
     "version": "1.0.0",
-    "description": "Fastify app to read data from CSV for Cloudflare",
+    "description": "Cloudflare Worker serving opportunities from JSON",
     "main": "index.js",
     "scripts": {
-        "start": "node index.js",
-        "deploy": "wrangler deploy"
+        "dev": "wrangler dev",
+        "deploy": "npm run build && wrangler deploy",
+        "test": "jest",
+        "build": "node scripts/csv-to-json.js",
+        "csv2json": "node scripts/csv-to-json.js"
     },
     "keywords": [
-        "fastify",
         "cloudflare",
-        "csv",
+        "worker",
+        "json",
         "serverless"
     ],
     "author": "Shyam Verma",
     "license": "MIT",
-    "dependencies": {
-        "fastify": "^4.29.0",
-        "@fastify/cors": "^9.0.0",
-        "csv-parse": "^5.5.3",
-        "cross-fetch": "^4.0.0"
-    },
     "devDependencies": {
-        "wrangler": "^3.50.0"
+        "csv-parse": "^5.5.3",
+        "jest": "^29.7.0",
+        "wrangler": "^4.14.1"
     }
 }
