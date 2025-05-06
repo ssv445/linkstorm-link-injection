@@ -82,6 +82,7 @@ export default {
 					headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
 				});
 			} catch (e) {
+				console.error(e);
 				return new Response(JSON.stringify({ error: 'Internal server error' }), {
 					status: 500,
 					headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
