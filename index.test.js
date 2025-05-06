@@ -31,7 +31,7 @@ test('fetch /get_website_page_opportunities returns opportunities', async () => 
     });
 });
 
-test('fetch /get_website_page_opportunities returns 400 for invalid pageUrl', async () => {
+test('fetch /get_website_page_opportunities returns empty array for invalid pageUrl', async () => {
     const req = new Request('http://x/get_website_page_opportunities?pageUrl=invalid');
     const resp = await mod.fetch(req);
     expect(resp.status).toBe(200);
