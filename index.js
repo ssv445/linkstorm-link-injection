@@ -1,4 +1,4 @@
-import opportunities from './opportunities.json';
+import defaultOpportunities from './opportunities.json';
 
 function processOpportunity(opportunity) {
     const text = opportunity['Matching Text'];
@@ -51,7 +51,7 @@ function prepareLimitedSnippet(text, limit = 100) {
     return sentence.trim();
 }
 
-function getWebsitePageOpportunities(pageUrl) {
+function getWebsitePageOpportunities(pageUrl, opportunities) {
     return opportunities.filter(row =>
         row['Source Page URL'] === pageUrl &&
         row['Status'] === 'accepted'
@@ -59,7 +59,7 @@ function getWebsitePageOpportunities(pageUrl) {
 }
 
 export default {
-    async fetch(request) {
+    async fetch(request, opportunities = defaultOpportunities) {
         const url = new URL(request.url);
         if (url.pathname === '/') {
             return new Response(JSON.stringify({ hello: 'world' }), {
@@ -76,7 +76,7 @@ export default {
                 });
             }
             try {
-                const result = getWebsitePageOpportunities(pageUrl);
+                const result = getWebsitePageOpportunities(pageUrl, opportunities);
                 return new Response(JSON.stringify(result), {
                     status: 200,
                     headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
