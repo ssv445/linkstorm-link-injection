@@ -2,7 +2,10 @@
 const fs = require('fs');
 const parse = require('csv-parse/sync').parse;
 
-const csv = fs.readFileSync('opportunities.csv', 'utf8');
+const source = '../data/opportunities.csv';
+const destination = '../src/opportunities.json';
+
+const csv = fs.readFileSync(source, 'utf8');
 const records = parse(csv, { columns: true, skip_empty_lines: true });
 
 //if record contains any "" blank, remove the key
@@ -17,7 +20,7 @@ if (filteredRecords.length !== records.length) {
     throw new Error(' > Number of records is not the same');
 }
 try {
-    fs.writeFileSync('opportunities.json', JSON.stringify(filteredRecords, null, 2));
+    fs.writeFileSync(destination, JSON.stringify(filteredRecords, null, 2));
 } catch (error) {
     throw new Error(' > Error writing JSON file ' + error);
 }
@@ -25,7 +28,7 @@ try {
 console.log("\nVerifying generated JSON file...");
 
 //verify that the json file is not empty
-if (fs.readFileSync('opportunities.json', 'utf8').length === 0) {
+if (fs.readFileSync(destination, 'utf8').length === 0) {
     throw new Error(' > JSON file is empty');
 } else {
     console.log(' > JSON file is generated successfully');
@@ -33,7 +36,7 @@ if (fs.readFileSync('opportunities.json', 'utf8').length === 0) {
 
 
 //verify that the json file is valid
-const json = JSON.parse(fs.readFileSync('opportunities.json', 'utf8'));
+const json = JSON.parse(fs.readFileSync(destination, 'utf8'));
 if (!Array.isArray(json)) {
     throw new Error(' > JSON file is not valid');
 } else {
