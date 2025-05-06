@@ -1,0 +1,4 @@
+name = "linkstorm-link-inection"  # Replace with your application name
+main = "index.js"
+compatibility_date = "2024-08-01" # Or a more recent date
+workers_dev = true # Recommended for easier deployment

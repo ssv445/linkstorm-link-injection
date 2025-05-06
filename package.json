@@ -1,0 +1,27 @@
+{
+    "name": "linkstorm-link-injection",
+    "version": "1.0.0",
+    "description": "Fastify app to read data from CSV for Cloudflare",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "deploy": "wrangler deploy"
+    },
+    "keywords": [
+        "fastify",
+        "cloudflare",
+        "csv",
+        "serverless"
+    ],
+    "author": "Shyam Verma",
+    "license": "MIT",
+    "dependencies": {
+        "fastify": "^4.29.0",
+        "@fastify/cors": "^9.0.0",
+        "csv-parse": "^5.5.3",
+        "cross-fetch": "^4.0.0"
+    },
+    "devDependencies": {
+        "wrangler": "^3.50.0"
+    }
+}
