@@ -26,3 +26,24 @@
    ```
 
 That's it! Your link injection worker should now be live.
+
+# Changes required on your website
+
+The linkstrom injection script you have installed, need a little addition. A custome server URL, to fetch opportunity from, which is the URL of above deployed cloudflare worker.
+
+Replace
+
+```
+
+<script defer src="https://linkstorm.io/linkstorm_site_linker.js?projectId=PROJECT_ID&websiteId=WEBSITE_ID">
+</script>
+```
+
+to
+
+```
+<script defer src="https://linkstorm.io/linkstorm_site_linker.js?projectId=PROJECT_ID&websiteId=WEBSITE_ID&serverDomain=YOUR_CLOUDFLARE_WORKER_URL";">
+</script>
+```
+
+where YOUR_CLOUDFLARE_WORKER_URL is a full URL (includes https://) like `https://YOUR-CUSTOM-END-POINT.workers.dev`
